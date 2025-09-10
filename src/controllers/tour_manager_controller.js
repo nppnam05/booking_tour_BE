@@ -21,17 +21,6 @@ exports.findById = async (req, res) => {
     }
 };
 
-exports.findByUserId = async (req, res) => {
-    try {
-        const manager = await TourManager.findByUserId(req.query.user_id);
-        if (!manager) {
-            return res.status(404).json({ message: 'Không tìm thấy quản lý tour với user này' });
-        }
-        res.status(200).json(manager);
-    } catch (err) {
-        res.status(500).json({ message: 'Lỗi máy chủ', error: err.message });
-    }
-};
 
 exports.create = async (req, res) => {
     try {
