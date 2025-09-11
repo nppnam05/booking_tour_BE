@@ -3,9 +3,10 @@ const router = express.Router();
 const userCompletedTourController = require('../controllers/user_completed_tour_controller');
 
 
+
+router.get('/', userCompletedTourController.findAll);
 router.get('/user', userCompletedTourController.findByUserId);
 router.get('/tour', userCompletedTourController.findByTourId);
-router.get('/', userCompletedTourController.findAll);
 router.get('/:id', userCompletedTourController.findById);
 
 router.post('/', userCompletedTourController.create);

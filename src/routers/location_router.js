@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const locationController = require('../controllers/location_controller');
 
-router.get('/search', locationController.searchByName);
+
 router.get('/', locationController.findAll);
+router.get('/search', locationController.searchByName);
 router.get('/:id', locationController.findById);
 
 

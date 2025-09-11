@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bookingController = require('../controllers/booking_controller');
 
+router.get('/', bookingController.findAll);
 router.get('/user', bookingController.findByUserId);
 router.get('/code', bookingController.findByBookingCode);
-router.get('/', bookingController.findAll);
 router.get('/:id', bookingController.findById);
 
 

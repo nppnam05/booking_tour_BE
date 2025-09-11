@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/admin_controller');
 
-router.get('/email', adminController.findByEmail);
 router.get('/', adminController.findAll);
+router.get('/email', adminController.findByEmail);
 router.get('/:id', adminController.findById);
 
 router.post('/', adminController.create);

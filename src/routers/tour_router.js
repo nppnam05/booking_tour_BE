@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const tourController = require('../controllers/tour_controller');
 
-router.get('/category', tourController.findByCategoryId);
+
 router.get('/', tourController.findAll);
+router.get('/category', tourController.findByCategoryId);
 router.get('/:id', tourController.findById);
 
 

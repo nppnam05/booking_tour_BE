@@ -3,9 +3,10 @@ const router = express.Router();
 const favoriteController = require('../controllers/favorite_controller');
 
 
+
+router.get('/', favoriteController.findAll);
 router.get('/user', favoriteController.findByUserId);
 router.get('/tour', favoriteController.findByTourId);
-router.get('/', favoriteController.findAll);
 router.get('/:id', favoriteController.findById);
 
 router.post('/', favoriteController.create);

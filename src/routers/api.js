@@ -24,8 +24,6 @@ const userStatsRouter = require('./user_stats_router')
 const hotelImageRouter = require('./hotel_image_router')
 
 
-
-
 router.use('/hotel-images', hotelImageRouter)
 router.use('/user-stats', userStatsRouter)
 router.use('/user-notifications', userNotificationRouter)
@@ -39,7 +37,7 @@ router.use('/tours', tourRouter)
 router.use('/users', userRouter)
 router.use('/admins', adminRouter)
 router.use('/bookings', bookingRouter)
-router.use('/categorys', categoryRouter)
+router.use('/categories', categoryRouter)
 router.use('/favorites', favoriteRouter)
 router.use('/guide-assignments', guideAssignmentRouter)
 router.use('/guide-evaluations', guideEvaluationRouter)

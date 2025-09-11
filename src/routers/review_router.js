@@ -3,9 +3,10 @@ const router = express.Router();
 const reviewController = require('../controllers/review_controller');
 
 
+
+router.get('/', reviewController.findAll);
 router.get('/tour', reviewController.findByTourId);
 router.get('/user', reviewController.findByUserId);
-router.get('/', reviewController.findAll);
 router.get('/:id', reviewController.findById);
 
 

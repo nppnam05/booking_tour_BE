@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const UserNotificationController = require('../controllers/user_notification_controller');
 
-router.get('/user', UserNotificationController.findByUserId);
+
 router.get('/', UserNotificationController.findAll);
+router.get('/user', UserNotificationController.findByUserId);
 router.get('/:id', UserNotificationController.findById);
 
 router.post('/', UserNotificationController.create);

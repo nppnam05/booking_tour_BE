@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const tourGuideController = require('../controllers/tour_guide_controller');
 
+
+router.get('/', tourGuideController.findAll);
 router.get('/manager', tourGuideController.findByManager);
 router.get('/user', tourGuideController.findByUserId);
-router.get('/', tourGuideController.findAll);
 router.get('/:id', tourGuideController.findById);
 
 
