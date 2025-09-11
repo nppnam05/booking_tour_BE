@@ -23,7 +23,7 @@ class GuideAssignment {
 
     static async create(guideAssignment) {
         const [result] = await db.query('INSERT INTO guide_assignments SET ?', guideAssignment);
-        return { id: result.insertId, ...guideAssignment };
+        return { ...guideAssignment, id: result.insertId };
     }
 
     static async update(id, guideAssignment) {

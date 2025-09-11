@@ -28,7 +28,7 @@ class User {
 
     static async create(user) {
         const [result] = await db.query('INSERT INTO users SET ?', user);
-        return { id: result.insertId, ...user };
+        return { ...user, id: result.insertId };
     }
 
     static async update(id, user) {

@@ -23,7 +23,7 @@ class Payment {
 
     static async create(payment) {
         const [result] = await db.query('INSERT INTO payments SET ?', payment);
-        return { id: result.insertId, ...payment };
+        return { ...payment, id: result.insertId };
     }
 
     static async update(id, payment) {

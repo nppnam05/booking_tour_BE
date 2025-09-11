@@ -18,7 +18,7 @@ class UserStat {
 
     static async create(userStat) {
         const [result] = await db.query('INSERT INTO user_stats SET ?', userStat);
-        return { id: result.insertId, ...userStat };
+        return { ...userStat, id: result.insertId };
     }
 
     static async update(id, userStat) {

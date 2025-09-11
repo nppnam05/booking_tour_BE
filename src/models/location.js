@@ -13,7 +13,7 @@ class Location {
 
     static async create(location) {
         const [result] = await db.query('INSERT INTO locations SET ?', location);
-        return { id: result.insertId, ...location };
+        return { ...location, id: result.insertId };
     }
 
     static async update(id, location) {

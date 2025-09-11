@@ -18,7 +18,7 @@ class Hotel {
 
     static async create(hotel) {
         const [result] = await db.query('INSERT INTO hotels SET ?', hotel);
-        return { id: result.insertId, ...hotel };
+        return { ...hotel, id: result.insertId };
     }
 
     static async update(id, hotel) {

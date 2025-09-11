@@ -18,7 +18,7 @@ class UserNotification {
 
     static async create(userNotification) {
         const [result] = await db.query('INSERT INTO user_notifications SET ?', userNotification);
-        return { id: result.insertId, ...userNotification };
+        return { ...userNotification, id: result.insertId };
     }
 
     static async update(id, userNotification) {

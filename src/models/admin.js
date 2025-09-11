@@ -18,7 +18,7 @@ class Admin {
 
     static async create(admin) {
         const [result] = await db.query('INSERT INTO admins SET ?', admin);
-        return { id: result.insertId, ...admin };
+        return { ...admin, id: result.insertId };
     }
 
     static async update(id, admin) {

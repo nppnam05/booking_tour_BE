@@ -18,7 +18,7 @@ class TourItinerary {
 
     static async create(tourItinerary) {
         const [result] = await db.query('INSERT INTO tour_itineraries SET ?', tourItinerary);
-        return { id: result.insertId, ...tourItinerary };
+        return { ...tourItinerary, id: result.insertId };
     }
 
     static async update(id, tourItinerary) {

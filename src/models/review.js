@@ -23,7 +23,7 @@ class Review {
 
     static async create(review) {
         const [result] = await db.query('INSERT INTO reviews SET ?', review);
-        return { id: result.insertId, ...review };
+        return { ...review, id: result.insertId };
     }
 
     static async update(id, review) {

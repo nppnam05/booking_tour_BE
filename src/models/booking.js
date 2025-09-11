@@ -23,7 +23,7 @@ class Booking {
 
     static async create(booking) {
         const [result] = await db.query('INSERT INTO bookings SET ?', booking);
-        return { id: result.insertId, ...booking };
+        return { ...booking, id: result.insertId };
     }
 
     static async update(id, booking) {

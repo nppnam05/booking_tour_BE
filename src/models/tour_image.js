@@ -18,7 +18,7 @@ class TourImage {
 
     static async create(tourImage) {
         const [result] = await db.query('INSERT INTO tour_images SET ?', tourImage);
-        return { id: result.insertId, ...tourImage };
+        return { ...tourImage, id: result.insertId };
     }
 
     static async update(id, tourImage) {

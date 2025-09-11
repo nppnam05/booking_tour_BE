@@ -18,7 +18,7 @@ class HotelImage {
 
     static async create(hotelImage) {
         const [result] = await db.query('INSERT INTO hotel_images SET ?', hotelImage);
-        return { id: result.insertId, ...hotelImage };
+        return { ...hotelImage, id: result.insertId };
     }
 
     static async update(id, hotelImage) {

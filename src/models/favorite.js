@@ -23,7 +23,7 @@ class Favorite {
 
     static async create(favorite) {
         const [result] = await db.query('INSERT INTO favorites SET ?', favorite);
-        return { id: result.insertId, ...favorite };
+        return { ...favorite, id: result.insertId };
     }
 
     static async update(id, favorite) {
