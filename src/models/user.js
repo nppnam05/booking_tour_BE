@@ -12,7 +12,10 @@ class User {
     }
 
     static async findByEmail(email) {
-        const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        const [rows] = await db.query(
+            'SELECT * FROM users WHERE email = ? AND role = ?',
+            [email, 'customer']
+        );
         return rows[0];
     }
 
