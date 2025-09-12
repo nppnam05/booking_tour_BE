@@ -82,7 +82,7 @@ CREATE TABLE hotels (
     address TEXT NOT NULL,
     latitude DECIMAL(10,7),
     longitude DECIMAL(10,7),
-    amenities TEXT,
+    amenities JSON,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_tour_id) REFERENCES category_tours(id) ON DELETE CASCADE
 );
@@ -119,10 +119,10 @@ CREATE TABLE tour_guides (
     hire_date TIMESTAMP NOT NULL,
     salary DECIMAL(12,2),
     experience INTEGER,
-    certifications TEXT,
-    languages TEXT,
-    specialties TEXT,
-    working_areas TEXT,
+    certifications JSON,
+    languages JSON,
+    specialties JSON,
+    working_areas JSON,
     avg_rating DECIMAL(3,2) DEFAULT 0,
     completed_tours INTEGER DEFAULT 0,
     cancelled_tours INTEGER DEFAULT 0,
@@ -247,7 +247,7 @@ CREATE TABLE tour_itineraries (
     day INTEGER NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT,
-    activities TEXT,
+    activities JSON,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (tour_id) REFERENCES tours(id) ON DELETE CASCADE,
     UNIQUE KEY unique_tour_day (tour_id, day)
@@ -364,8 +364,19 @@ INSERT INTO category_tours (name, description, image_url, location_id, total_tou
 ('Nha Trang Tours', 'Điểm đến bãi biển đẹp...', 'https://example.com/category-nhatrang.jpg', 1, 1, 1, NOW());
 
 -- Insert Hotels
-INSERT INTO hotels (name, description, category_tour_id, address, latitude, longitude, amenities, created_at) VALUES
-('Vinpearl Resort Nha Trang', 'Khu nghỉ dưỡng sang trọng bên bờ biển...', 1, 'Đảo Hòn Tre, Nha Trang', 12.1833, 109.2167, '["Hồ bơi", "WiFi", "Bữa ăn sáng", "Lối vào bãi biển"]', NOW());
+INSERT INTO hotels (
+    name, description, category_tour_id, address, latitude, longitude, amenities, created_at
+) VALUES (
+    'Vinpearl Resort Nha Trang',
+    'Khu nghỉ dưỡng sang trọng bên bờ biển...',
+    1,
+    'Đảo Hòn Tre, Nha Trang',
+    12.1833,
+    109.2167,
+    JSON_ARRAY('Hồ bơi', 'WiFi', 'Bữa ăn sáng', 'Lối vào bãi biển'),
+    NOW()
+);
+
 
 -- Insert Tours
 INSERT INTO tours (category_tour_id, title, description, days, nights, base_price, created_by, total_bookings, total_revenue, avg_rating, total_reviews, created_at) VALUES
@@ -377,8 +388,8 @@ INSERT INTO tour_managers (user_id, employee_id, name, email, phone, department,
 
 -- Insert Tour Guides (phải có user_id)
 INSERT INTO tour_guides (user_id, employee_id, name, email, phone, managed_by, hire_date, salary, experience, certifications, languages, specialties, working_areas, avg_rating, completed_tours, cancelled_tours, total_tours_guided, total_revenue, total_reviews, created_at) VALUES
-(3, 'TG1', 'guide1', 'guide1@tourguide.com', '+84907654321', 1, '2025-08-24 00:00:00', 12000000.00, 3, '["Hướng dẫn viên du lịch được cấp phép"]', '["Vietnamese", "English"]', '["Chuyến tham quan bãi biển"]', '["Nha Trang", "Vũng Tàu"]', 4.70, 1, 0, 1, 599.98, 1, '2025-08-24 00:00:00'),
-(4, 'TG2', 'guide2', 'guide2@tourguide.com', '+84907654322', 1, '2025-08-24 00:00:00', 12000000.00, 2, '["Hướng dẫn viên du lịch được cấp phép"]', '["Vietnamese", "English"]', '["Chuyến tham quan bãi biển"]', '["Nha Trang"]', 0.00, 0, 0, 0, 0.00, 0, NOW());
+(3, 'TG1', 'guide1', 'guide1@tourguide.com', '+84907654321', 1, '2025-08-24 00:00:00', 12000000.00, 3, JSON_ARRAY('Hướng dẫn viên du lịch được cấp phép'), JSON_ARRAY('Vietnamese', 'English'), JSON_ARRAY('Chuyến tham quan bãi biển'), JSON_ARRAY('Nha Trang', 'Vũng Tàu'), 4.70, 1, 0, 1, 599.98, 1, '2025-08-24 00:00:00'),
+(4, 'TG2', 'guide2', 'guide2@tourguide.com', '+84907654322', 1, '2025-08-24 00:00:00', 12000000.00, 2, JSON_ARRAY('Hướng dẫn viên du lịch được cấp phép'), JSON_ARRAY('Vietnamese', 'English'), JSON_ARRAY('Chuyến tham quan bãi biển'), JSON_ARRAY('Nha Trang'), 0.00, 0, 0, 0, 0.00, 0, NOW());
 
 -- Insert Tour Schedules
 INSERT INTO tour_schedules (tour_id, hotel_id, tour_manager_id, primary_guide_id, status, start_date, end_date, available_slots, final_price, registration_open_date, registration_close_date, created_at) VALUES
@@ -415,16 +426,35 @@ INSERT INTO hotel_images (hotel_id, image_url, is_primary, created_at) VALUES
 -- Insert Tour Itineraries
 INSERT INTO tour_itineraries (tour_id, day, title, description, activities, created_at) VALUES
 (1, 1, 'Đến nơi & tắm biển', 'Nhận phòng khách sạn, tự do tắm biển và nghỉ ngơi', 
-'[{"time":"14:00","activity":"Nhận phòng khách sạn","location":"Vinpearl Resort"},{"time":"16:00","activity":"Thư giãn tại bãi biển","location":"Bãi biển Trần Phú"},{"time":"19:00","activity":"Ăn tối và khám phá chợ đêm","location":"Chợ đêm Nha Trang"}]', NOW()),
+    JSON_ARRAY(
+        JSON_OBJECT('time','14:00','activity','Nhận phòng khách sạn','location','Vinpearl Resort'),
+        JSON_OBJECT('time','16:00','activity','Thư giãn tại bãi biển','location','Bãi biển Trần Phú'),
+        JSON_OBJECT('time','19:00','activity','Ăn tối và khám phá chợ đêm','location','Chợ đêm Nha Trang')
+    ), NOW()),
 
 (1, 2, 'Khám phá vịnh Nha Trang', 'Tham quan đảo, lặn ngắm san hô, vui chơi biển',
-'[{"time":"08:00","activity":"Khởi hành tour 3 đảo","location":"Cảng Cầu Đá"},{"time":"10:00","activity":"Lặn biển ngắm san hô","location":"Hòn Mun"},{"time":"12:00","activity":"Ăn trưa hải sản","location":"Hòn Một"},{"time":"15:00","activity":"Vui chơi giải trí trên biển","location":"Hòn Tằm"},{"time":"18:30","activity":"Ăn tối và nghỉ ngơi","location":"Vinpearl Resort"}]', NOW()),
+    JSON_ARRAY(
+        JSON_OBJECT('time','08:00','activity','Khởi hành tour 3 đảo','location','Cảng Cầu Đá'),
+        JSON_OBJECT('time','10:00','activity','Lặn biển ngắm san hô','location','Hòn Mun'),
+        JSON_OBJECT('time','12:00','activity','Ăn trưa hải sản','location','Hòn Một'),
+        JSON_OBJECT('time','15:00','activity','Vui chơi giải trí trên biển','location','Hòn Tằm'),
+        JSON_OBJECT('time','18:30','activity','Ăn tối và nghỉ ngơi','location','Vinpearl Resort')
+    ), NOW()),
 
 (1, 3, 'Văn hóa & Thư giãn', 'Tham quan danh lam thắng cảnh, trải nghiệm spa',
-'[{"time":"09:00","activity":"Tham quan Tháp Bà Ponagar","location":"Tháp Bà Ponagar"},{"time":"11:00","activity":"Tắm bùn khoáng nóng","location":"I-Resort Nha Trang"},{"time":"14:00","activity":"Mua sắm quà lưu niệm","location":"Chợ Đầm"},{"time":"19:00","activity":"Gala Dinner bên bờ biển","location":"Nhà hàng hải sản"}]', NOW()),
+    JSON_ARRAY(
+        JSON_OBJECT('time','09:00','activity','Tham quan Tháp Bà Ponagar','location','Tháp Bà Ponagar'),
+        JSON_OBJECT('time','11:00','activity','Tắm bùn khoáng nóng','location','I-Resort Nha Trang'),
+        JSON_OBJECT('time','14:00','activity','Mua sắm quà lưu niệm','location','Chợ Đầm'),
+        JSON_OBJECT('time','19:00','activity','Gala Dinner bên bờ biển','location','Nhà hàng hải sản')
+    ), NOW()),
 
 (1, 4, 'Tạm biệt Nha Trang', 'Tự do nghỉ ngơi, chuẩn bị hành lý và trả phòng',
-'[{"time":"07:00","activity":"Ăn sáng buffet tại khách sạn","location":"Vinpearl Resort"},{"time":"09:00","activity":"Tự do tham quan, tắm biển","location":"Khuôn viên resort"},{"time":"11:00","activity":"Trả phòng khách sạn","location":"Vinpearl Resort"}]', NOW());
+    JSON_ARRAY(
+        JSON_OBJECT('time','07:00','activity','Ăn sáng buffet tại khách sạn','location','Vinpearl Resort'),
+        JSON_OBJECT('time','09:00','activity','Tự do tham quan, tắm biển','location','Khuôn viên resort'),
+        JSON_OBJECT('time','11:00','activity','Trả phòng khách sạn','location','Vinpearl Resort')
+    ), NOW());
 
 -- Insert Reviews
 INSERT INTO reviews (user_id, tour_id, booking_id, rating, comment, helpful_count, created_at) VALUES

@@ -1,6 +1,10 @@
+const jwt = require('jsonwebtoken');
+
+
 const authenticateUser = (req, res, next) => {
     // Lấy token từ header
     const authHeader = req.headers.authorization;
+
     if (!authHeader) return res.status(401).json({ message: 'No token provided' });
 
     const token = authHeader?.split(' ')[1];
@@ -11,7 +15,7 @@ const authenticateUser = (req, res, next) => {
 
         // decoded = {
         //   userId: 456,
-        //   email: 'user@gmail.com', 
+        //   email: 'user@gmail.com',
         //   role: 'customer',
         //   iat: 1640995200,
         //   exp: 1641600000
@@ -22,7 +26,7 @@ const authenticateUser = (req, res, next) => {
         next();
 
     } catch (error) {
-        return res.status(401).json({ message: 'Invalid token' });
+        return res.status(401).json({ message: 'Invalid token', error: error.message });
     }
 };
 

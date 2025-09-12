@@ -1,10 +1,11 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Admin = require('../models/admin');
 
 const authController = {
-    loginUser: async (req, res) => {
-        const user = await User.findByEmail(req.params.email);
+    loginCustomer: async (req, res) => {
+        const user = await User.findByEmail(req.query.email);
 
         if (!user) return res.status(404).json({ message: "User not found" });
 

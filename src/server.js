@@ -8,16 +8,16 @@ const middlewareAuth = require('./middleware/auth');
 
 const app = express() // create express app
 
-// Middleware
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/login/user', authLogin.loginUser);
+app.use('/login/users', authLogin.loginCustomer);
 
 // Web routes 
 app.use('/', webRouter);
 
 // API routes
-app.use('/api', middlewareAuth, apiRouter);
+app.use('/api', apiRouter);
 
 // handler 404 not found
 app.use((req, res, next) => {
